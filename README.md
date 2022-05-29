@@ -16,7 +16,7 @@
 보행자, 신호등, 도로표지판, 로드마크 등 새로운 클래스 추가
 
 > ### **dataset & weigth file link**
-> ### https://drive.google.com/drive/folders/1fs02_OsharhaKdqzBGw2OGeV3JaFQ6pK?usp=sharing
+> ### 
 > ### https://aihub.or.kr/aihub-data/autonomous/about
 
 ### version 2.0
