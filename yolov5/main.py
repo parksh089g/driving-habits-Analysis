@@ -28,7 +28,7 @@ from skimage.feature import hog
 from settings import CALIB_FILE_NAME, PERSPECTIVE_FILE_NAME, UNWARPED_SIZE, ORIGINAL_SIZE
 ########
 from os import system
-
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
 class DigitalFilter:
 
     def __init__(self, vector, b, a):
@@ -188,12 +188,12 @@ def caculate_drive(xyxy, im0, label, c, perspective_data,
             relative_speed=car.draw_speed(im0, color=(0, 0, 255), thickness=2, frame_history=vehicle_frame_history)
             distance=car.draw(im0, color=(0, 0, 255), thickness=2)
             if distance < 1.5 : #거리가 가까우면 충돌 위험 피드백
-                user_feedback(feedback_xyxy, im0, label='Too close!', color=(0,0,200), line_thickness=5)
+                # user_feedback(feedback_xyxy, im0, label='Too close!', color=(0,0,200), line_thickness=5)
                 if not (vehicle_frame_history < 1.5) :  #이전 프레임에서 충돌 위험이 없었을 때만 score_case에 추가(중복 방지) 
                     score_case=1
-            if relative_speed < -10:
-                if not (vehicle_speed_history < -10):     #이전 프레임에서 급감속이 없었을 때만 score_case에 추가(중복 방지)
-                    score_case=2
+            # if relative_speed < -10:
+            #     if not (vehicle_speed_history < -10):     #이전 프레임에서 급감속이 없었을 때만 score_case에 추가(중복 방지)
+                    # score_case=2
             vehicle_frame_history=distance
             vehicle_speed_history=relative_speed
         else:
@@ -225,7 +225,7 @@ def caculate_drive(xyxy, im0, label, c, perspective_data,
             relative_speed=car3.draw_speed(im0, color=(0, 0, 255), thickness=2, frame_history=pedestrian_frame_history)
             distance=car3.draw(im0, color=(0, 0, 255), thickness=2)
             if distance < 1 : #거리가 가까우면 충돌 위험 피드백
-                user_feedback(feedback_xyxy, im0, label='Too close!', color=(0,0,200), line_thickness=5)
+                # user_feedback(feedback_xyxy, im0, label='Too close!', color=(0,0,200), line_thickness=5)
                 if not (pedestrian_frame_history < 1): #이전 프레임에서 충돌 위험이 없었을 때만 score_case에 추가(중복 방지) 
                     score_case=4
             if relative_speed < -10:
@@ -472,7 +472,7 @@ def result_info(score_result, fps): #case 0=Null/1=차량거리 유지/2=차량 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', nargs='+', type=str, default='best(epoch 16 final).pt', help='model.pt path(s)')
-    parser.add_argument('--source', type=str, default='../test_video/', help='source')  # file/folder, 0 for webcam
+    parser.add_argument('--source', type=str, default='../test_video2/2.mp4', help='source')  # file/folder, 0 for webcam
     parser.add_argument('--img-size', type=int, default=1280, help='inference size (pixels)')
     parser.add_argument('--conf-thres', type=float, default=0.25, help='object confidence threshold')
     parser.add_argument('--iou-thres', type=float, default=0.45, help='IOU threshold for NMS')

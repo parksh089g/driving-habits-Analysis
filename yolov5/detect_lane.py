@@ -6,6 +6,7 @@ from IPython.display import HTML
 from keras.models import load_model
 from skimage.transform import resize
 from PIL import Image
+import os
 
 # Class to average lanes with
 class Lanes():
@@ -68,23 +69,26 @@ def road_lines(image):
     # f.write("i: "+str(index_number)+" j: "+str(index_number2)+'\n')
     # f.close()
     result = cv2.addWeighted(image, 1, img, 1, 0)
-    line_index=(index_number+index_number2)/2
-    if abs(line_index - img.shape[1]/2) > 50:
-        f2=open("../lane_score.txt",'a')
-        f2.write("1\n")
-        f2.close
+    try:
+        line_index=(index_number+index_number2)/2
+        if abs(line_index - img.shape[1]/2) > 50:
+            f2=open("../lane_score.txt",'a')
+            f2.write("1\n")
+            f2.close
+    except:
+        pass
     return result
 
 
 if __name__ == '__main__':
     model = load_model('full_CNN_model.h5')
     lanes = Lanes()
-
+    filename=os.listdir('../output/exp/')[0]
     # Where to save the output video
-    vid_output = '../output2/3.mp4'
-
+    vid_output = '../output2/'+filename
+    
     # Location of the input video
-    clip1 = VideoFileClip("../output/exp/3.mp4")
+    clip1 = VideoFileClip("../output/exp/"+filename)
     vid_clip = clip1.fl_image(road_lines)
     vid_clip.write_videofile(vid_output, audio=False,fps=15)
 
